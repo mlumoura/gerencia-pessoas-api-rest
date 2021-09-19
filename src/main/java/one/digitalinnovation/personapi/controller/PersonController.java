@@ -4,6 +4,7 @@ import one.digitalinnovation.personapi.dto.response.MessageResponseDTO;
 import one.digitalinnovation.personapi.entity.Person;
 import one.digitalinnovation.personapi.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,10 @@ public class PersonController {
     public PersonController (PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
-
+    @GetMapping
+    public String getBook() {
+        return "API Test!";
+    }
     @PostMapping
     public MessageResponseDTO createPerson(Person person) {
         Person savedperson = personRepository.save(person);
