@@ -33,8 +33,8 @@ public class Person {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
-    private String cpf;
+//    @Column(nullable = false, unique = true)
+//    private String cpf;
 
     private LocalDate birthDate;
 
