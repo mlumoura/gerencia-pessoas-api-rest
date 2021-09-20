@@ -1,4 +1,4 @@
-package one.digitalinnovation.personapi.entity;
+package one.digitalinnovation.personapi.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +13,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Phone {
 
     @Id
