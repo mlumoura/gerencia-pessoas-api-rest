@@ -33,8 +33,10 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    // Essas anotações foram a causa do erro
+    // O metodo correto para elas é o ultimo o "createPerson"
+    // @PostMapping
+    // @ResponseStatus(HttpStatus.CREATED)
 
     @GetMapping
     public List<PersonDTO> listAll() {
@@ -47,6 +49,9 @@ public class PersonController {
         return personService.findById(id);
     }
 
+    // aqui as anotações fazem mais sentido.
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public MessageResponseDTO createPerson(@RequestBody @Valid PersonDTO personDTO) {
         return personService.createPerson(personDTO);
     }
