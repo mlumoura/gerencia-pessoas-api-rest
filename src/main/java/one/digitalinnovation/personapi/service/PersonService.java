@@ -24,32 +24,32 @@ public class PersonService {
         this.personRepository = personRepository;
     }
 
+    // Para o POST
+    public MessageResponseDTO createPerson(@Valid PersonDTO personDTO) {
+        Person personToSave = personMapper.toModel(personDTO);
+        Person savedPerson =  personRepository.save(personToSave);
+        return createMessageResponse(savedPerson.getId(), "Created person with ID ");
+    }
+    //Para o GET All
     public List<PersonDTO> listAll() {
         List<Person> people = personRepository.findAll();
         return people.stream()
                 .map(personMapper::toDTO)
                 .collect(Collectors.toList());
     }
-    public PersonDTO findById(Long id) throws PersonNotFoundException {
-        Person person = personRepository.findById(id)
-                .orElseThrow(() -> new PersonNotFoundException(id));
-
-        return personMapper.toDTO(person);
-    }
-
+    //Para o DELETE
     public void delete(Long id) throws PersonNotFoundException {
-        personRepository.findById(id)
-                .orElseThrow(() -> new PersonNotFoundException(id));
-
+        verifyIfExists(id);
         personRepository.deleteById(id);
     }
-
-    public MessageResponseDTO createPerson(@Valid PersonDTO personDTO) {
-        Person personToSave = personMapper.toModel(personDTO);
-        Person savedPerson =  personRepository.save(personToSave);
-        return createMessageResponse(savedPerson.getId(), "Created person with ID ");
+    public PersonDTO findById(Long id) throws PersonNotFoundException {
+        Person person = verifyIfExists(id);
+        return personMapper.toDTO(person);
     }
-
+    private Person verifyIfExists(Long id) throws PersonNotFoundException {
+        return personRepository.findById(id)
+                .orElseThrow(() -> new PersonNotFoundException(id));
+    }
     private MessageResponseDTO createMessageResponse(Long id, String message) {
         return MessageResponseDTO
                 .builder()
