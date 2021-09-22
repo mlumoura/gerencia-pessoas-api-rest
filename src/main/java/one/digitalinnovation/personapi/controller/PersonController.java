@@ -2,6 +2,7 @@ package one.digitalinnovation.personapi.controller;
 
 import one.digitalinnovation.personapi.dto.request.PersonDTO;
 import one.digitalinnovation.personapi.dto.response.MessageResponseDTO;
+import one.digitalinnovation.personapi.exception.PersonCpfNotFoundException;
 import one.digitalinnovation.personapi.exception.PersonNotFoundException;
 import one.digitalinnovation.personapi.repositories.PersonRepository;
 import one.digitalinnovation.personapi.service.PersonService;
@@ -30,11 +31,19 @@ public class PersonController {
         return personService.listAll();
     }
 
+    @GetMapping("/{cpf}")
+    @ResponseStatus(HttpStatus.OK)
+    public PersonDTO findByCpf(@PathVariable String cpf) throws PersonCpfNotFoundException {
+        return personService.findByCpf(cpf);
+    }
+
+    /*
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public PersonDTO findById(@PathVariable Long id) throws PersonNotFoundException {
         return personService.findById(id);
     }
+    */
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

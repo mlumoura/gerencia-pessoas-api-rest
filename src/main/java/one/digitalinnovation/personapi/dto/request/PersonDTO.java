@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import one.digitalinnovation.personapi.entities.Person;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.Valid;
@@ -39,4 +40,11 @@ public class PersonDTO {
     @Valid
     @NotEmpty
     private List<PhoneDTO> phones;
+
+    public PersonDTO(Person person) {
+        this.id = person.getId();
+        this.firstName = person.getFirstName();
+        this.lastName = person.getLastName();
+        this.cpf = person.getCpf();
+    }
 }
