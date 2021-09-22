@@ -2,13 +2,11 @@ package one.digitalinnovation.personapi.controller;
 
 import one.digitalinnovation.personapi.dto.request.PersonDTO;
 import one.digitalinnovation.personapi.dto.response.MessageResponseDTO;
-import one.digitalinnovation.personapi.exception.PersonCpfNotFoundException;
 import one.digitalinnovation.personapi.exception.PersonNotFoundException;
-import one.digitalinnovation.personapi.repositories.PersonRepository;
 import one.digitalinnovation.personapi.service.PersonService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,24 +24,15 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @GetMapping
-    public List<PersonDTO> listAll() {
-        return personService.listAll();
-    }
-
-    @GetMapping("/{cpf}")
-    @ResponseStatus(HttpStatus.OK)
-    public PersonDTO findByCpf(@PathVariable String cpf) throws PersonCpfNotFoundException {
-        return personService.findByCpf(cpf);
-    }
-
-    /*
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public PersonDTO findById(@PathVariable Long id) throws PersonNotFoundException {
         return personService.findById(id);
     }
-    */
+    @GetMapping
+    public List<PersonDTO> listAll() {
+        return personService.listAll();
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -57,3 +46,7 @@ public class PersonController {
         personService.delete(id);
     }
 }
+
+
+
+

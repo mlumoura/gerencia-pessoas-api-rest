@@ -4,11 +4,9 @@ import one.digitalinnovation.personapi.dto.mapper.PersonMapper;
 import one.digitalinnovation.personapi.dto.request.PersonDTO;
 import one.digitalinnovation.personapi.dto.response.MessageResponseDTO;
 import one.digitalinnovation.personapi.entities.Person;
-import one.digitalinnovation.personapi.exception.PersonCpfNotFoundException;
 import one.digitalinnovation.personapi.exception.PersonNotFoundException;
 import one.digitalinnovation.personapi.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
@@ -29,14 +27,16 @@ public class PersonService {
     // Para o POST
     public MessageResponseDTO createPerson(@Valid PersonDTO personDTO) {
         Person personToSave = personMapper.toModel(personDTO);
-        Person savedPerson =  personRepository.save(personToSave);
+        Person savedPerson = personRepository.save(personToSave);
         return createMessageResponse(savedPerson.getId(), "Created person with ID ");
     }
+
     // Para o GET Id
     public PersonDTO findById(Long id) throws PersonNotFoundException {
         Person person = verifyIfExists(id);
         return personMapper.toDTO(person);
     }
+
     private Person verifyIfExists(Long id) throws PersonNotFoundException {
         return personRepository.findById(id)
                 .orElseThrow(() -> new PersonNotFoundException(id));
@@ -50,35 +50,12 @@ public class PersonService {
                 .collect(Collectors.toList());
     }
 
-    // Para o GET Cpf
-    /*public ResponseEntity<PersonDTO> findByCpf(String cpf) {
-        Person personByCpf = personRepository.findByCpf(cpf);
-        if (personByCpf != null) {
-            return ResponseEntity.ok(new PersonDTO(personByCpf));
-        }
-        return ResponseEntity.notFound().build();
-    }
-*/
-
-
-
-
-
-
-    public PersonDTO findByCpf(String cpf) throws PersonCpfNotFoundException {
-        Person person = verifyIfExistsCpf(cpf);
-        return personMapper.toDTO(person);
-    }
-    private Person verifyIfExistsCpf(String cpf) throws PersonCpfNotFoundException {
-        Person personByCpf = personRepository.findByCpf(cpf);
-        return personRepository.findByCpf(cpf);
-    }
-
-    //Para o DELETE
+      //Para o DELETE
     public void delete(Long id) throws PersonNotFoundException {
         verifyIfExists(id);
         personRepository.deleteById(id);
     }
+
     // MENSAGEM
     private MessageResponseDTO createMessageResponse(Long id, String message) {
         return MessageResponseDTO
@@ -87,3 +64,4 @@ public class PersonService {
                 .build();
     }
 }
+
