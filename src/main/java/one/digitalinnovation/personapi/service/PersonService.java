@@ -4,9 +4,12 @@ import one.digitalinnovation.personapi.dto.mapper.PersonMapper;
 import one.digitalinnovation.personapi.dto.request.PersonDTO;
 import one.digitalinnovation.personapi.dto.response.MessageResponseDTO;
 import one.digitalinnovation.personapi.entities.Person;
+import one.digitalinnovation.personapi.exception.PersonCpfNotFoundException;
 import one.digitalinnovation.personapi.exception.PersonNotFoundException;
 import one.digitalinnovation.personapi.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
@@ -36,7 +39,6 @@ public class PersonService {
         Person person = verifyIfExists(id);
         return personMapper.toDTO(person);
     }
-
     private Person verifyIfExists(Long id) throws PersonNotFoundException {
         return personRepository.findById(id)
                 .orElseThrow(() -> new PersonNotFoundException(id));
@@ -48,6 +50,14 @@ public class PersonService {
         return people.stream()
                 .map(personMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+    // Para o GET CPF
+    public ResponseEntity<PersonDTO> findByCpf(String cpf) throws PersonCpfNotFoundException {
+        Person personByCpf = personRepository.findByCpf(cpf);
+        if (personByCpf != null) {
+            return new ResponseEntity(personByCpf, HttpStatus.FOUND);
+        }
+        return new ResponseEntity("Person with CPF " + cpf + " not found", HttpStatus.NOT_FOUND);
     }
 
       //Para o DELETE
@@ -62,6 +72,14 @@ public class PersonService {
                 .builder()
                 .message(message + id)
                 .build();
+    }
+
+    class Erro{
+        public String message;
+
+        public Erro(String message) {
+            this.message = message;
+        }
     }
 }
 
