@@ -4,12 +4,9 @@ import one.digitalinnovation.personapi.dto.mapper.PersonMapper;
 import one.digitalinnovation.personapi.dto.request.PersonDTO;
 import one.digitalinnovation.personapi.dto.response.MessageResponseDTO;
 import one.digitalinnovation.personapi.entities.Person;
-import one.digitalinnovation.personapi.exception.PersonCpfNotFoundException;
 import one.digitalinnovation.personapi.exception.PersonNotFoundException;
 import one.digitalinnovation.personapi.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
@@ -18,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class PersonService {
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
     private final PersonMapper personMapper = PersonMapper.INSTANCE;
 
@@ -51,7 +48,8 @@ public class PersonService {
                 .map(personMapper::toDTO)
                 .collect(Collectors.toList());
     }
-    // Para o GET CPF
+
+ /*   // Para o GET CPF - ESTÁ FUNCIONANDO
     public ResponseEntity<PersonDTO> findByCpf(String cpf) throws PersonCpfNotFoundException {
         Person personByCpf = personRepository.findByCpf(cpf);
         if (personByCpf != null) {
@@ -59,8 +57,9 @@ public class PersonService {
         }
         return new ResponseEntity("Person with CPF " + cpf + " not found", HttpStatus.NOT_FOUND);
     }
+     */
 
-      //Para o DELETE
+    //Para o DELETE
     public void delete(Long id) throws PersonNotFoundException {
         verifyIfExists(id);
         personRepository.deleteById(id);
@@ -72,14 +71,6 @@ public class PersonService {
                 .builder()
                 .message(message + id)
                 .build();
-    }
-
-    class Erro{
-        public String message;
-
-        public Erro(String message) {
-            this.message = message;
-        }
     }
 }
 
