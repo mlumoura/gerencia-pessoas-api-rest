@@ -38,8 +38,12 @@ public class Person {
     @Column(nullable = false, unique = true)
     private String cpf;
 
+    @Column
+    private String email;
+
     private LocalDate birthDate;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Phone> phones = new ArrayList<>();
 }
+
