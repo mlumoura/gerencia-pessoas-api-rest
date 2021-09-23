@@ -49,15 +49,15 @@ public class PersonService {
                 .collect(Collectors.toList());
     }
 
- /*   // Para o GET CPF - ESTÁ FUNCIONANDO
-    public ResponseEntity<PersonDTO> findByCpf(String cpf) throws PersonCpfNotFoundException {
-        Person personByCpf = personRepository.findByCpf(cpf);
-        if (personByCpf != null) {
-            return new ResponseEntity(personByCpf, HttpStatus.FOUND);
-        }
-        return new ResponseEntity("Person with CPF " + cpf + " not found", HttpStatus.NOT_FOUND);
+
+    // Para o UPDATE
+    public MessageResponseDTO update(Long id, PersonDTO personDTO) throws PersonNotFoundException {
+        personRepository.findById(id)
+                .orElseThrow(() -> new PersonNotFoundException(id));
+        Person updatedPerson = personMapper.toModel(personDTO);
+        Person savedPerson = personRepository.save(updatedPerson);
+        return createMessageResponse(savedPerson.getId(),"Person successfully updated with ID ");
     }
-     */
 
     //Para o DELETE
     public void delete(Long id) throws PersonNotFoundException {
